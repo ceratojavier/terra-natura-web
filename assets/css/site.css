@@ -90,15 +90,56 @@ a {
 .hero {
   padding: 5.8rem 0 4.6rem;
   position: relative;
-  background:
-    linear-gradient(112deg, rgba(21, 31, 27, 0.72) 0%, rgba(21, 31, 27, 0.42) 60%, rgba(21, 31, 27, 0.2) 100%),
-    url("../../media/galeria/hero.jpg") center / cover no-repeat;
+  overflow: hidden;
   min-height: 560px;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(112deg, rgba(21, 31, 27, 0.76) 0%, rgba(21, 31, 27, 0.48) 56%, rgba(21, 31, 27, 0.26) 100%);
+  z-index: 1;
+}
+
+.hero-slides {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transform: scale(1.03);
+  transition: opacity 1200ms ease, transform 7000ms ease;
+}
+
+.hero-slide.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.hero-glow {
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  right: -140px;
+  top: -120px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(226, 206, 170, 0.32), rgba(226, 206, 170, 0));
+  pointer-events: none;
+  z-index: 2;
+  filter: blur(2px);
 }
 
 .hero-grid {
   display: grid;
   gap: 1.4rem;
+  position: relative;
+  z-index: 3;
 }
 
 @media (min-width: 900px) {
@@ -159,6 +200,49 @@ h1 {
 
 .section {
   padding: 3.6rem 0;
+}
+
+.cinema {
+  background: #111a16;
+}
+
+.cinema-band {
+  position: relative;
+  min-height: 46vh;
+  background-size: cover;
+  background-position: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cinema-band::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, rgba(17, 24, 21, 0.65) 15%, rgba(17, 24, 21, 0.35) 55%, rgba(17, 24, 21, 0.6) 100%);
+}
+
+.cinema-overlay {
+  position: relative;
+  z-index: 2;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 4.2rem 1rem;
+  color: #f5efe6;
+}
+
+.cinema-overlay p {
+  margin: 0;
+  font-size: 0.92rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #d8c5ab;
+}
+
+.cinema-overlay h2 {
+  margin: 0.5rem 0 0;
+  color: #fff;
+  max-width: 680px;
+  font-size: clamp(2rem, 3.8vw, 3.3rem);
 }
 
 .section-alt {

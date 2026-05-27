@@ -9,6 +9,9 @@
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="es_AR" />
   <meta name="theme-color" content="#0f1f18" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./assets/css/site.css" />
   <link rel="icon" type="image/svg+xml" href="./assets/icons/app-icon.svg" />
   <script defer src="./assets/js/cotiza.js"></script>
@@ -29,6 +32,12 @@
   </header>
 
   <section class="hero reveal">
+    <div class="hero-slides" aria-hidden="true">
+      <span class="hero-slide is-active" style="background-image:url('./media/galeria/hero.jpg')"></span>
+      <span class="hero-slide" style="background-image:url('./media/galeria/03-pileta-alpina.jpg')"></span>
+      <span class="hero-slide" style="background-image:url('./media/galeria/06-suite5-ventanal.jpg')"></span>
+    </div>
+    <div class="hero-glow" aria-hidden="true"></div>
     <div class="wrap hero-grid">
       <div>
         <p class="eyebrow">Web oficial · Cabañas Alpinas Terra Natura</p>
@@ -51,6 +60,27 @@
         <a class="btn btn-outline" href="https://www.booking.com/hotel/ar/cabanas-alpinas-terra-natura-bialet-masse.es.html" target="_blank" rel="noopener">Ver en Booking</a>
       </div>
     </div>
+  </section>
+
+  <section class="cinema reveal" id="destacados">
+    <article class="cinema-band" style="background-image:url('./media/galeria/02-piscina.jpg')">
+      <div class="cinema-overlay">
+        <p>Tiempo de descanso</p>
+        <h2>Pileta climatizada y parque abierto</h2>
+      </div>
+    </article>
+    <article class="cinema-band" style="background-image:url('./media/galeria/04-alpina-vista-puerta.jpg')">
+      <div class="cinema-overlay">
+        <p>Refugio de sierra</p>
+        <h2>Cabañas con vista y privacidad real</h2>
+      </div>
+    </article>
+    <article class="cinema-band" style="background-image:url('./media/galeria/08-suites-exterior.jpg')">
+      <div class="cinema-overlay">
+        <p>Diseño de estadía</p>
+        <h2>Suites independientes para escapadas</h2>
+      </div>
+    </article>
   </section>
 
   <section class="section section-alt reveal" id="galeria">
