@@ -1,0 +1,19 @@
+{
+  "name": "Terra Natura — Panel del complejo",
+  "short_name": "Terra Natura",
+  "description": "Acceso rápido: cotización, reservas y enlaces del complejo.",
+  "start_url": "/marketing?utm_source=homescreen",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0f1f18",
+  "theme_color": "#0f1f18",
+  "lang": "es-AR",
+  "icons": [
+    {
+      "src": "/assets/icons/app-icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

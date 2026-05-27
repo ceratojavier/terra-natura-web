@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es-AR" class="panel-app">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Terra Natura · Entrada rápida</title>
+  <meta name="description" content="Panel simple del complejo: cotización, reservas y enlaces. Podés guardarlo como app en el celular." />
+  <meta name="theme-color" content="#0f1f18" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Terra Natura" />
+  <meta name="application-name" content="Terra Natura" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/app-icon.svg" />
+  <link rel="apple-touch-icon" href="/assets/icons/app-icon.svg" />
+  <link rel="stylesheet" href="/assets/css/site.css" />
+  <link rel="stylesheet" href="/assets/css/panel.css" />
+  <script defer src="/assets/js/panel.js"></script>
+</head>
+
+<body class="landing-focused panel-app-body">
+  <div class="panel-top">
+    <div class="wrap panel-top-inner">
+      <div>
+        <p class="panel-sub">Complejo Terra Natura</p>
+        <h1 class="panel-title">Entrada rápida</h1>
+      </div>
+      <a class="btn btn-outline" href="/">Ir al sitio público</a>
+    </div>
+  </div>
+
+  <!-- Menú principal: tocás un dibujo y vas a esa parte -->
+  <section class="wrap panel-pane" data-pane="menu">
+    <p class="panel-intro">
+      <strong>Uso solo del equipo del complejo.</strong> Ves opciones grandes: tocás y abrís. En el celular podés usar
+      <strong>“Agregar a pantalla de inicio”</strong> desde el navegador y te queda como un ícono de app que te trae siempre acá.
+    </p>
+
+    <div id="ama-caja" class="panel-help" style="margin-top:0; margin-bottom:1rem;">
+      <strong>Agente de marketing (AMA) + WhatsApp automático</strong> — fase: <span id="ama-fase">…</span>
+      <p id="ama-detalle" style="margin:0.5rem 0 0; font-size:0.88rem;"></p>
+      <p style="margin:0.6rem 0 0; font-size:0.8rem;">
+        En la carpeta del proyecto hay una nota para el dueño: <code>docs/QUE_SIGUE_AMA_Y_AUTOMATIZACION.md</code> (te la puede abrir quien te ayuda con la PC).
+      </p>
+    </div>
+
+    <div class="launcher-grid">
+      <a class="app-tile" href="/marketing" style="border-color: rgba(201, 169, 98, 0.5);">
+        <span class="emoji" aria-hidden="true">📣</span>
+        Marketing y redes
+        <small>Calendario · textos · video · WhatsApp</small>
+      </a>
+      <a class="app-tile" href="/#cotiza">
+        <span class="emoji" aria-hidden="true">💰</span>
+        Cotizar
+        <small>Precio y cupo desde el sistema</small>
+      </a>
+      <button type="button" class="app-tile" data-show-pane="reservas">
+        <span class="emoji" aria-hidden="true">📋</span>
+        Reservas
+        <small>Lista del calendario PMS</small>
+      </button>
+      <button type="button" class="app-tile" data-show-pane="ical">
+        <span class="emoji" aria-hidden="true">📅</span>
+        Calendarios
+        <small>Enlaces para Airbnb / Booking</small>
+      </button>
+      <a class="app-tile" href="/guia/" target="_blank" rel="noopener">
+        <span class="emoji" aria-hidden="true">📺</span>
+        Guía huésped
+        <small>Código TV y tips</small>
+      </a>
+      <a class="app-tile" href="https://wa.me/5493541571190" target="_blank" rel="noopener">
+        <span class="emoji" aria-hidden="true">💬</span>
+        WhatsApp
+        <small>Consultas reservas</small>
+      </a>
+      <a class="app-tile" href="https://www.google.com/maps/search/?api=1&amp;query=Caba%C3%B1as+Alpinas+Terra+Natura+Bialet+Mas%C3%A9"
+        target="_blank" rel="noopener">
+        <span class="emoji" aria-hidden="true">📍</span>
+        Mapa
+        <small>Ubicación en Google</small>
+      </a>
+    </div>
+
+    <div class="panel-help">
+      <strong>¿Cómo lo pongo como ícono en el celular?</strong><br />
+      Chrome (Android): menú⋮ → Instalar aplicación / Agregar a la pantalla de inicio.<br />
+      Safari (iPhone): compartir <strong>⇧</strong> → «Agregar a inicio». Luego aparece el dibujo verde arriba: al apretarlo
+      entrás al panel (modo pantalla grande, como app).
+    </div>
+
+    <p class="cotiza-muted" style="margin-top:1.5rem; font-size:0.82rem;">
+      En esta versión todavía <strong>no hay contraseña</strong>; usalo en tu Wi‑Fi confiable hasta que definamos seguridad para el equipo.
+      Los cambios graves de reserva los hace el servidor; si algo falla, contactá a quien mantiene el sistema.
+    </p>
+  </section>
+
+  <section class="wrap panel-pane" data-pane="reservas" hidden>
+    <header>
+      <button type="button" class="btn btn-outline" data-show-pane="menu">← Volver al menú</button>
+      <h2 style="margin: 1rem 0 0.35rem; font-size:1.25rem;">Reservas cargadas</h2>
+      <p class="panel-sub" style="margin:0;">
+        Solo lectura desde la base del PMS.
+      </p>
+    </header>
+    <div class="btn-row" style="margin:1rem 0;">
+      <label style="color:var(--muted);font-size:0.85rem;">Desde
+        <input id="panel-desde" type="date" />
+      </label>
+      <label style="color:var(--muted);font-size:0.85rem;">Hasta
+        <input id="panel-hasta" type="date" />
+      </label>
+      <button type="button" class="btn btn-primary" onclick="recargarReservas()">
+        Actualizar lista
+      </button>
+    </div>
+    <p id="msg-reservas" class="cotiza-muted" role="status"></p>
+    <div style="overflow-x:auto;margin-top:0.75rem;">
+      <table class="panel-table">
+        <thead>
+          <tr>
+            <th>Entrada</th>
+            <th>Salida</th>
+            <th>Unidad</th>
+            <th>Estado</th>
+            <th>Origen</th>
+            <th>Huésped</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-reservas-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="wrap panel-pane" data-pane="ical" hidden>
+    <header>
+      <button type="button" class="btn btn-outline" data-show-pane="menu">← Volver al menú</button>
+      <h2 style="margin: 1rem 0 0.35rem; font-size:1.25rem;">Calendarios (ocupación)</h2>
+      <p class="panel-sub" style="margin:0; max-width:40rem;">
+        Cada botón «Copiar enlace» te deja pegar una dirección donde las plataformas piden una URL para importar ocupación.<br />Si Airbnb u otro te pide también una contraseña en el mismo paso, quien programa el servidor te la pasa cuando haga falta; no tenés que entender cómo está armado el vínculo.
+      </p>
+    </header>
+    <div id="lista-ical" style="margin-top:1.25rem;"></div>
+  </section>
+</body>
+
+</html>

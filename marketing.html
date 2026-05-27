@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es-AR" class="panel-app marketing-app">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Terra Natura · Marketing y redes</title>
+  <meta name="theme-color" content="#0f1f18" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/app-icon.svg" />
+  <link rel="stylesheet" href="/assets/css/site.css" />
+  <link rel="stylesheet" href="/assets/css/panel.css" />
+  <link rel="stylesheet" href="/assets/css/marketing.css" />
+  <script defer src="/assets/js/marketing.js"></script>
+</head>
+
+<body class="landing-focused panel-app-body">
+  <div class="panel-top">
+    <div class="wrap panel-top-inner">
+      <div>
+        <p class="panel-sub">AMA · Agente de marketing</p>
+        <h1 class="panel-title">Redes, calendario y WhatsApp</h1>
+      </div>
+      <a class="btn btn-outline" href="/programa">← Programa</a>
+      <a class="btn btn-outline" href="/agentes">Agentes</a>
+      <a class="btn btn-outline" href="/panel">Panel</a>
+    </div>
+  </div>
+
+  <section class="wrap panel-pane" data-pane="menu">
+    <p class="panel-intro">
+      Acá armás <strong>publicaciones</strong>, el <strong>calendario</strong> y <strong>videos</strong> con fotos del complejo.
+      Por ahora <strong>vos copiás y publicás</strong> en Instagram/Facebook/WhatsApp; cuando conectemos Meta, podrá publicar solo.
+      Modo: <span id="modo-pill" class="modo-pill">…</span>
+    </p>
+
+    <div class="stats-row" id="stats-row">
+      <div class="stat-box"><strong id="stat-hoy">—</strong> hoy</div>
+      <div class="stat-box"><strong id="stat-pend">—</strong> pendientes</div>
+      <div class="stat-box"><strong id="stat-total">—</strong> en calendario</div>
+    </div>
+
+    <div class="launcher-grid">
+      <button type="button" class="app-tile" data-show-pane="calendario">
+        <span class="emoji">📅</span>
+        Calendario
+        <small>Qué publicar y cuándo</small>
+      </button>
+      <button type="button" class="app-tile" data-show-pane="crear">
+        <span class="emoji">✍️</span>
+        Crear texto
+        <small>Post para IG / FB / Status</small>
+      </button>
+      <button type="button" class="app-tile" data-show-pane="video">
+        <span class="emoji">🎬</span>
+        Crear video
+        <small>Slideshow con tus fotos</small>
+      </button>
+      <button type="button" class="app-tile" data-show-pane="whatsapp">
+        <span class="emoji">💬</span>
+        WhatsApp
+        <small>Sugerir respuesta (pegás vos)</small>
+      </button>
+      <button type="button" class="app-tile" id="btn-semana">
+        <span class="emoji">⚡</span>
+        Llenar semana
+        <small>7 borradores automáticos</small>
+      </button>
+      <button type="button" class="app-tile" id="btn-calendario-90">
+        <span class="emoji">📆</span>
+        Calendario 90 días
+        <small>IG · FB · WA · TikTok + guiones</small>
+      </button>
+      <button type="button" class="app-tile" id="btn-videos-editorial">
+        <span class="emoji">🎞️</span>
+        Crear videos (5)
+        <small>YouTube B-roll + fotos cabañas · montaje pro</small>
+      </button>
+    </div>
+
+    <div class="panel-help">
+      <strong>Paso 1 marketing:</strong> tocá «Calendario 90 días» (recomendado) o «Llenar semana» → revisá en Calendario → copiá y publicá.
+      Guías del agente senior: <code>docs/AGENTE_CALENDARIO_REDES_INDICE.md</code>
+      Fotos: carpeta <code>archivos multimedia/</code> del proyecto.
+    </div>
+  </section>
+
+  <section class="wrap panel-pane" data-pane="calendario" hidden>
+    <button type="button" class="btn btn-outline" data-show-pane="menu">← Menú</button>
+    <h2 style="margin-top:1rem;">Calendario de publicaciones</h2>
+    <ul class="cal-list" id="lista-calendario"></ul>
+    <p id="msg-calendario" class="cotiza-muted"></p>
+  </section>
+
+  <section class="wrap panel-pane" data-pane="crear" hidden>
+    <button type="button" class="btn btn-outline" data-show-pane="menu">← Menú</button>
+    <h2 style="margin-top:1rem;">Crear texto para redes</h2>
+    <form id="form-copy" class="form-cotiza card-unidad">
+      <div class="form-grid">
+        <label>Ángulo
+          <select id="copy-angulo">
+            <option value="parejas">Parejas</option>
+            <option value="familia">Familia</option>
+            <option value="evento">Evento / puente</option>
+            <option value="temporada_baja">Temporada baja</option>
+            <option value="reserva_directa">Reserva directa</option>
+          </select>
+        </label>
+        <label>Red
+          <select id="copy-canal">
+            <option value="instagram">Instagram</option>
+            <option value="facebook">Facebook</option>
+            <option value="whatsapp_status">WhatsApp Status</option>
+            <option value="tiktok">TikTok</option>
+          </select>
+        </label>
+        <label class="span-2">Frase extra (opcional)
+          <input id="copy-extra" type="text" placeholder="Ej. Promo 3x2 en temporada baja" />
+        </label>
+        <label>Fecha en calendario
+          <input id="copy-fecha" type="date" />
+        </label>
+      </div>
+      <div class="cta-row" style="margin-top:1rem;">
+        <button type="submit" class="btn btn-primary">Generar y guardar</button>
+        <button type="button" class="btn btn-outline" id="btn-solo-preview">Solo previsualizar</button>
+      </div>
+    </form>
+    <div id="copy-preview" class="copy-preview" hidden></div>
+    <div class="cta-row" id="copy-acciones" hidden>
+      <button type="button" class="btn btn-primary" id="btn-copiar-copy">Copiar texto</button>
+    </div>
+  </section>
+
+  <section class="wrap panel-pane" data-pane="video" hidden>
+    <button type="button" class="btn btn-outline" data-show-pane="menu">← Menú</button>
+    <h2 style="margin-top:1rem;">Video con fotos del complejo</h2>
+    <p class="cotiza-muted">Usa imágenes de <code>archivos multimedia/</code>. Si falta MoviePy en la PC, te da instrucciones para Canva gratis.</p>
+    <form id="form-video" class="form-cotiza card-unidad">
+      <label>Título en el video
+        <input id="video-titulo" type="text" value="Terra Natura · Bialet Massé" />
+      </label>
+      <label>Carpeta de fotos (opcional)
+        <input id="video-carpeta" type="text" placeholder="Ej. Parque o dejar vacío para cualquier foto" />
+      </label>
+      <button type="submit" class="btn btn-primary" style="margin-top:1rem;">Generar video</button>
+    </form>
+    <p id="msg-video" class="cotiza-muted" role="status"></p>
+    <a id="link-video" class="btn btn-outline" hidden download>Descargar video</a>
+  </section>
+
+  <section class="wrap panel-pane" data-pane="whatsapp" hidden>
+    <button type="button" class="btn btn-outline" data-show-pane="menu">← Menú</button>
+    <h2 style="margin-top:1rem;">Sugerencia para WhatsApp</h2>
+    <p class="cotiza-muted">Pegá lo que te escribió el cliente; el sistema sugiere respuesta. Vos revisás y enviás desde el celular.</p>
+    <label>Mensaje del cliente
+      <textarea id="wa-cliente" rows="4" style="width:100%;margin-top:0.35rem;padding:0.65rem;border-radius:var(--radius);background:rgba(255,255,255,0.06);color:var(--text);border:1px solid rgba(124,185,140,0.35);"></textarea>
+    </label>
+    <button type="button" class="btn btn-primary" id="btn-wa-sugerir" style="margin-top:0.75rem;">Sugerir respuesta</button>
+    <div id="wa-preview" class="copy-preview" hidden style="margin-top:1rem;"></div>
+    <button type="button" class="btn btn-outline" id="btn-copiar-wa" hidden style="margin-top:0.5rem;">Copiar sugerencia</button>
+  </section>
+</body>
+
+</html>

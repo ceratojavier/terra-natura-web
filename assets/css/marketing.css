@@ -1,0 +1,78 @@
+/* Centro de marketing AMA */
+.marketing-app .panel-top {
+  border-bottom-color: rgba(201, 169, 98, 0.35);
+}
+
+.marketing-app .panel-title {
+  color: var(--gold);
+}
+
+.modo-pill {
+  display: inline-block;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  background: rgba(201, 169, 98, 0.2);
+  color: var(--gold);
+}
+
+.stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.stat-box {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(201, 169, 98, 0.25);
+}
+
+.stat-box strong {
+  display: block;
+  font-size: 1.4rem;
+  color: var(--gold);
+}
+
+.copy-preview {
+  white-space: pre-wrap;
+  font-size: 0.9rem;
+  padding: 1rem;
+  border-radius: var(--radius);
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(124, 185, 140, 0.2);
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.cal-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cal-item {
+  padding: 0.85rem 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.04);
+  border-left: 4px solid var(--accent);
+}
+
+.cal-item.estado-borrador {
+  border-left-color: var(--muted);
+}
+
+.cal-item.estado-aprobado {
+  border-left-color: var(--gold);
+}
+
+.cal-meta {
+  font-size: 0.78rem;
+  color: var(--muted);
+}

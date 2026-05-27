@@ -1,0 +1,6 @@
+{
+  "apiBase": "",
+  "bookingUrl": "https://www.booking.com/hotel/ar/cabanas-alpinas-terra-natura-bialet-masse.es.html",
+  "whatsapp": "5493541571190",
+  "_comentario": "apiBase vacío = mismo origen (FastAPI). En GitHub Pages poné la URL del servidor PMS, ej. https://api.alpinasterranatura.com.ar"
+}

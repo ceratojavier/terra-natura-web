@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Terra Natura — Centro de Agentes</title>
+  <link rel="stylesheet" href="/assets/css/panel.css" />
+  <link rel="stylesheet" href="/assets/css/agentes.css" />
+</head>
+<body class="agentes-page">
+  <header class="agentes-header">
+    <div>
+      <h1>Centro de Agentes</h1>
+      <p class="sub">Cabañas Alpinas Terra Natura · automatización</p>
+    </div>
+    <nav class="agentes-nav">
+      <a href="/turismo">Grilla turismo</a>
+      <a href="/marketing">Marketing</a>
+      <a href="/panel">Reservas</a>
+      <a href="/">Web pública</a>
+    </nav>
+  </header>
+
+  <section class="agentes-actions">
+    <button type="button" id="btn-ciclo" class="btn primary">Ejecutar ciclo diario (los 3 agentes)</button>
+    <span id="ciclo-status" class="status"></span>
+  </section>
+
+  <div id="hub-stats" class="hub-stats"></div>
+
+  <main id="agentes-grid" class="agentes-grid"></main>
+
+  <section id="ultimo-ciclo" class="ultimo-ciclo hidden">
+    <h2>Último ciclo</h2>
+    <pre id="ciclo-json"></pre>
+  </section>
+
+  <script src="/assets/js/agentes.js"></script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es-AR" class="panel-app programa-app">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Terra Natura · Programa</title>
+  <meta name="theme-color" content="#0f1f18" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/app-icon.svg" />
+  <link rel="stylesheet" href="/assets/css/site.css" />
+  <link rel="stylesheet" href="/assets/css/panel.css" />
+  <link rel="stylesheet" href="/assets/css/marketing.css" />
+  <link rel="stylesheet" href="/assets/css/programa.css" />
+  <script defer src="/assets/js/programa.js"></script>
+</head>
+
+<body class="landing-focused panel-app-body">
+  <div class="panel-top">
+    <div class="wrap panel-top-inner">
+      <div>
+        <p class="panel-sub">Cabañas Alpinas · Bialet Massé</p>
+        <h1 class="panel-title">Terra Natura</h1>
+      </div>
+      <span id="estado-servidor" class="modo-pill">Conectando…</span>
+    </div>
+  </div>
+
+  <section class="wrap">
+    <p class="panel-intro">
+      <strong>Programa principal:</strong> YouTube, calendario editorial y videos. El ícono del escritorio abre acá.
+      <strong><a href="/configurador">Configurador</a></strong> (instalador paso a paso) ·
+      <a href="/marketing">Marketing</a> ·
+      <a href="/panel">Panel reservas</a>.
+    </p>
+
+    <div class="stats-row" id="stats-programa">
+      <div class="stat-box"><strong id="stat-yt">—</strong> videos YouTube</div>
+      <div class="stat-box"><strong id="stat-cal">—</strong> en calendario</div>
+      <div class="stat-box"><strong id="stat-pend">—</strong> pendientes</div>
+    </div>
+
+    <div class="herramientas-row" id="herramientas-row"></div>
+
+    <h2 class="programa-seccion">Videos y redes (automático)</h2>
+    <div class="launcher-grid programa-grid-principal">
+      <button type="button" class="app-tile app-tile-destacado" id="btn-recolectar-yt">
+        <span class="emoji">📺</span>
+        1 · Recolectar videos YouTube
+        <small>Biblioteca B-roll Punilla / Bialet</small>
+      </button>
+      <button type="button" class="app-tile app-tile-destacado" id="btn-calendario-editorial" title="Usa las fechas del paso 1">
+        <span class="emoji">📆</span>
+        2 · Calendario editorial
+        <small>Posts para todo el rango elegido</small>
+      </button>
+      <button type="button" class="app-tile app-tile-destacado" id="btn-videos-editorial">
+        <span class="emoji">🎞️</span>
+        3 · Generar videos editoriales
+        <small>Hasta 5 reels (YouTube + fotos)</small>
+      </button>
+    </div>
+
+    <div class="log-panel" id="log-panel" hidden>
+      <h3>Actividad</h3>
+      <pre id="log-texto"></pre>
+    </div>
+
+    <h2 class="programa-seccion">Más opciones</h2>
+    <div class="launcher-grid">
+      <a class="app-tile" href="/marketing">
+        <span class="emoji">📱</span>
+        Marketing completo
+        <small>Calendario, textos, WhatsApp</small>
+      </a>
+      <a class="app-tile" href="/agentes">
+        <span class="emoji">🤖</span>
+        Agentes
+      </a>
+      <a class="app-tile" href="/turismo">
+        <span class="emoji">🗺️</span>
+        Grilla turismo
+      </a>
+      <a class="app-tile" href="/panel">
+        <span class="emoji">🏠</span>
+        Panel PMS
+      </a>
+      <button type="button" class="app-tile" id="btn-abrir-videos">
+        <span class="emoji">📂</span>
+        Carpeta videos
+      </button>
+    </div>
+
+    <details class="agenda-fold" id="agenda-fold">
+      <summary>Agenda de eventos confirmados (opcional — para posts por fiesta)</summary>
+
+      <section class="agenda-web agenda-web-compact" id="agenda-web">
+        <p class="panel-intro agenda-aviso">
+          Solo entran eventos con <strong>fecha oficial</strong> en
+          <code>ama/data/eventos_confirmados_ar.json</code> más feriados/puentes reales. No inventamos recitales.
+        </p>
+        <div class="agenda-toolbar card-glass">
+          <div class="agenda-fechas">
+            <label class="field-fecha"><span>Desde</span><input type="date" id="input-desde" /></label>
+            <label class="field-fecha"><span>Hasta</span><input type="date" id="input-hasta" /></label>
+          </div>
+          <div class="agenda-actions">
+            <button type="button" class="btn-agenda btn-agenda-primary" id="btn-ver-calendario-importantes">
+              Ver eventos confirmados
+            </button>
+            <button type="button" class="btn-agenda btn-agenda-secondary" id="btn-actualizar-agenda">
+              Actualizar agenda
+            </button>
+          </div>
+        </div>
+        <p id="cal-preview-resumen" class="agenda-resumen"></p>
+        <div id="panel-calendario-importantes" class="agenda-panel card-glass" hidden>
+          <div class="agenda-tabs" role="tablist">
+            <button type="button" class="agenda-tab active" data-vista="listado" id="tab-vista-listado">Listado</button>
+            <button type="button" class="agenda-tab" data-vista="calendario" id="tab-vista-calendario">Calendario</button>
+          </div>
+          <div id="agenda-stats-chips" class="agenda-stats-chips"></div>
+          <div id="cal-preview-leyenda" class="agenda-leyenda"></div>
+          <div id="cal-preview-lista" class="agenda-lista-wrap"></div>
+          <div id="cal-preview-grid" class="agenda-cal-wrap" hidden></div>
+        </div>
+      </section>
+    </details>
+
+    <div id="cal-dia-modal" class="cal-dia-modal" hidden aria-hidden="true">
+      <div class="cal-dia-modal-backdrop" id="cal-dia-modal-backdrop"></div>
+      <div class="cal-dia-modal-contenido" role="dialog" aria-labelledby="cal-dia-modal-titulo">
+        <button type="button" class="cal-dia-modal-cerrar" id="cal-dia-modal-cerrar" aria-label="Cerrar">✕</button>
+        <h3 id="cal-dia-modal-titulo"></h3>
+        <div id="cal-dia-modal-cuerpo"></div>
+      </div>
+    </div>
+
+    <div class="panel-help">
+      <strong>Acceso:</strong> icono «Terra Natura» en el escritorio. Qué puede y qué no el sistema:
+      <code>docs/QUE_PUEDE_Y_NO_PUEDE.md</code>
+    </div>
+  </section>
+</body>
+
+</html>

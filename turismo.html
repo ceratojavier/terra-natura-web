@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Grilla turística — Terra Natura</title>
+  <link rel="stylesheet" href="/assets/css/panel.css" />
+  <link rel="stylesheet" href="/assets/css/agentes.css" />
+  <style>
+    .grilla-mes { margin-bottom: 1.5rem; }
+    .grilla-mes h3 { color: #95d5b2; margin-bottom: 0.5rem; }
+    .ev-card { background: #152018; border: 1px solid #2a4034; border-radius: 8px; padding: 0.75rem; margin: 0.4rem 0; font-size: 0.9rem; }
+    .ev-card .loc { color: #8ad4ff; font-size: 0.85rem; }
+    .plat { display: inline-block; margin: 0.2rem; padding: 0.2rem 0.5rem; background: #243028; border-radius: 4px; font-size: 0.8rem; }
+  </style>
+</head>
+<body class="agentes-page">
+  <header class="agentes-header">
+    <div>
+      <h1>Grilla turística anual</h1>
+      <p class="sub">Bialet Massé · Valle de Punilla · Córdoba — eventos y material para videos</p>
+    </div>
+    <nav class="agentes-nav">
+      <a href="/agentes">Agentes</a>
+      <a href="/marketing">Marketing</a>
+    </nav>
+  </header>
+
+  <section class="agentes-actions">
+    <button type="button" id="btn-youtube" class="btn primary">Buscar videos en YouTube (API)</button>
+    <button type="button" id="btn-recolectar" class="btn secondary">Actualizar eventos y grilla</button>
+    <a id="link-json" class="btn secondary" href="/api/turismo/grilla/export?anio=2026" download>Descargar JSON</a>
+    <span id="status" class="status"></span>
+  </section>
+
+  <section id="youtube-list" style="margin-bottom:2rem">
+    <h2 style="color:#95d5b2;font-size:1.2rem">Videos YouTube guardados</h2>
+    <p class="sub" style="opacity:0.8">Reales desde la API — listos para armar reels. Configurá <code>YOUTUBE_API_KEY</code> en .env</p>
+    <div id="videos-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem"></div>
+  </section>
+
+  <div id="resumen" class="hub-stats"></div>
+  <div id="contenidos" style="margin-bottom:1.5rem"></div>
+  <div id="grilla"></div>
+
+  <script>
+    async function load() {
+      const st = document.getElementById("status");
+      try {
+        const g = await (await fetch("/api/turismo/grilla?anio=2026")).json();
+        document.getElementById("resumen").innerHTML = `
+          <div class="stat-card"><strong>${g.resumen.eventos}</strong>Eventos</div>
+          <div class="stat-card"><strong>${g.resumen.lugares}</strong>Lugares</div>
+          <div class="stat-card"><strong>${g.resumen.contenidos}</strong>Enlaces YT/IG/TikTok</div>`;
+        const plat = Object.entries(g.resumen.por_plataforma || {}).map(([k,v]) => `<span class="plat">${k}: ${v}</span>`).join("");
+        document.getElementById("contenidos").innerHTML = `<p><strong>Banco de contenidos:</strong> ${plat}</p>`;
+        const box = document.getElementById("grilla");
+        box.innerHTML = g.meses.filter(m => m.total > 0).map(m => `
+          <section class="grilla-mes">
+            <h3>${m.nombre} (${m.total})</h3>
+            ${m.eventos.map(e => `
+              <div class="ev-card">
+                <strong>${e.nombre}</strong>
+                <div class="loc">${e.localidad} · ${e.categoria}${e.distancia_km_bialet != null ? " · " + e.distancia_km_bialet + " km" : ""}</div>
+                ${e.fecha_inicio ? `<div>${e.fecha_inicio}${e.fecha_fin && e.fecha_fin !== e.fecha_inicio ? " → " + e.fecha_fin : ""}</div>` : (e.dia_aprox || "")}
+                ${e.tags ? "<div>#" + e.tags.replace(/,/g, " #") + "</div>" : ""}
+              </div>`).join("")}
+          </section>`).join("");
+        st.textContent = "Grilla " + g.anio + " cargada";
+        st.className = "status ok";
+      } catch (e) {
+        st.textContent = e.message;
+        st.className = "status err";
+      }
+    }
+    async function loadVideos() {
+      const grid = document.getElementById("videos-grid");
+      try {
+        const d = await (await fetch("/api/turismo/contenidos?solo_youtube_reales=true")).json();
+        const list = d.contenidos || [];
+        if (!list.length) {
+          grid.innerHTML = "<p>No hay videos aún. Configurá la API y pulsá Buscar videos.</p>";
+          return;
+        }
+        grid.innerHTML = list.map(v => `
+          <article class="ev-card" style="padding:0;overflow:hidden">
+            ${v.thumbnail_url ? `<img src="${v.thumbnail_url}" alt="" style="width:100%;aspect-ratio:16/9;object-fit:cover">` : ""}
+            <div style="padding:0.75rem">
+              <strong>${v.titulo || "Sin título"}</strong>
+              <div class="loc">${v.localidad || ""} · ${v.canal_autor || ""}</div>
+              <div>${fmtDur(v.duracion_segundos)} · ${(v.vistas||0).toLocaleString("es-AR")} vistas</div>
+              <a href="${v.url}" target="_blank" rel="noopener" style="color:#8ad4ff">Ver en YouTube</a>
+            </div>
+          </article>`).join("");
+      } catch (e) {
+        grid.innerHTML = "<p class='status err'>" + e.message + "</p>";
+      }
+    }
+    function fmtDur(s) {
+      if (!s) return "";
+      const m = Math.floor(s / 60), sec = s % 60;
+      return m + ":" + String(sec).padStart(2, "0");
+    }
+    document.getElementById("btn-youtube").onclick = async () => {
+      const st = document.getElementById("status");
+      st.textContent = "Buscando en YouTube…";
+      st.className = "status";
+      try {
+        const r = await (await fetch("/api/turismo/youtube/recolectar", { method: "POST" })).json();
+        if (!r.ok) {
+          st.textContent = r.error || "Error API";
+          st.className = "status err";
+        } else {
+          st.textContent = `+${r.nuevos} nuevos · ${r.total_youtube} total en base`;
+          st.className = "status ok";
+        }
+        loadVideos();
+      } catch (e) {
+        st.textContent = e.message;
+        st.className = "status err";
+      }
+    };
+    document.getElementById("btn-recolectar").onclick = async () => {
+      await fetch("/api/turismo/recolectar?youtube=false", { method: "POST" });
+      load();
+    };
+    load();
+    loadVideos();
+  </script>
+</body>
+</html>

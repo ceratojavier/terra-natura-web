@@ -1,0 +1,455 @@
+.configurador-wrap {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding-bottom: 2.5rem;
+}
+
+.config-progreso {
+  margin: 1rem 0 1.25rem;
+}
+
+.config-progreso-bar {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.config-progreso-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3d8f5c, #7cb98c);
+  transition: width 0.35s ease;
+}
+
+.config-progreso-texto {
+  margin: 0.45rem 0 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.config-pasos-mini {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.config-paso-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.config-paso-dot.ok {
+  background: #5cb87a;
+}
+
+.config-paso-dot.parcial {
+  background: #c9a227;
+}
+
+.config-paso-dot.pendiente {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.config-paso-dot.activo {
+  box-shadow: 0 0 0 2px #7cb98c;
+}
+
+.config-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(124, 185, 140, 0.25);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.1rem 1rem;
+}
+
+.config-ical-titulo {
+  margin: 1.25rem 0 0.65rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.config-ical-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.config-ical-fila {
+  padding: 0.65rem 0.7rem;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(124, 185, 140, 0.2);
+}
+
+.config-ical-fila-top {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 0.45rem;
+  align-items: center;
+}
+
+.config-ical-select {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.82rem;
+  padding: 0.35rem 0.4rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.25);
+  color: inherit;
+}
+
+.config-ical-url,
+.config-ical-notas {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 0.82rem;
+  padding: 0.4rem 0.5rem;
+  margin-top: 0.35rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.2);
+  color: inherit;
+}
+
+.config-ical-quitar {
+  flex-shrink: 0;
+  min-width: 2.2rem;
+  padding: 0.35rem 0.5rem;
+}
+
+.config-fuente-grupo {
+  border: 1px solid rgba(124, 185, 140, 0.2);
+  border-radius: 8px;
+  margin: 0 0 0.85rem;
+  padding: 0.5rem 0.65rem 0.35rem;
+}
+
+.config-fuente-grupo legend {
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0 0.35rem;
+  color: var(--muted);
+}
+
+.config-fuente-fila {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  padding: 0.4rem 0;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.config-fuente-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.config-fuente-nombre {
+  display: block;
+  line-height: 1.35;
+}
+
+.config-fuente-meta {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-top: 0.15rem;
+}
+
+.config-fuente-link {
+  font-size: 0.78rem;
+  margin-left: 0.35rem;
+}
+
+.config-fuente-badge {
+  font-size: 0.68rem;
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  margin-left: 0.25rem;
+  vertical-align: middle;
+}
+
+.config-fuente-badge.activo {
+  background: rgba(92, 184, 122, 0.25);
+  color: #9ee0b0;
+}
+
+.config-fuente-badge.ref {
+  background: rgba(201, 162, 39, 0.2);
+  color: #e8d48a;
+}
+
+.config-fuente-badge.custom {
+  background: rgba(100, 149, 237, 0.2);
+  color: #a8c4ff;
+}
+
+.config-fuente-custom input {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 0.82rem;
+  padding: 0.4rem 0.5rem;
+  margin-top: 0.35rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.2);
+  color: inherit;
+}
+
+.config-fuentes-custom {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.config-card-header {
+  margin-bottom: 1rem;
+}
+
+.config-paso-num {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.config-titulo {
+  margin: 0.25rem 0 0;
+  font-size: 1.35rem;
+}
+
+.config-subtitulo {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.config-estado-pill {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  background: rgba(92, 184, 122, 0.2);
+  color: #9ee0b0;
+}
+
+.config-estado-pill.parcial {
+  background: rgba(201, 162, 39, 0.2);
+  color: #e8d080;
+}
+
+.config-estado-pill.pendiente {
+  background: rgba(255, 120, 120, 0.15);
+  color: #f0a0a0;
+}
+
+.config-ayuda {
+  margin-bottom: 1rem;
+}
+
+.config-ayuda-toggle {
+  width: 100%;
+  text-align: left;
+  padding: 0.65rem 0.75rem;
+  border-radius: 8px;
+  border: 1px dashed rgba(124, 185, 140, 0.4);
+  background: rgba(0, 0, 0, 0.15);
+  color: #b8e0c4;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.config-ayuda-body {
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  font-size: 0.88rem;
+}
+
+.config-ayuda-item {
+  margin-bottom: 0.85rem;
+}
+
+.config-ayuda-item strong {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: #d4f0dc;
+}
+
+.config-campo {
+  margin-bottom: 1rem;
+}
+
+.config-campo label {
+  display: block;
+  font-size: 0.88rem;
+  margin-bottom: 0.35rem;
+  color: #d8eadc;
+}
+
+.config-campo input[type="text"],
+.config-campo input[type="email"],
+.config-campo input[type="tel"],
+.config-campo input[type="url"],
+.config-campo input[type="number"],
+.config-campo input[type="password"],
+.config-campo textarea {
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  border-radius: 8px;
+  border: 1px solid rgba(124, 185, 140, 0.35);
+  background: rgba(0, 0, 0, 0.25);
+  color: inherit;
+  font: inherit;
+}
+
+.config-campo textarea {
+  min-height: 88px;
+  resize: vertical;
+}
+
+.config-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.65rem;
+}
+
+.config-check input {
+  margin-top: 0.2rem;
+}
+
+.config-info {
+  font-size: 0.93rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.config-info ul {
+  padding-left: 1.2rem;
+}
+
+.config-checklist li {
+  margin-bottom: 0.5rem;
+  list-style: none;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.config-checklist li.ok::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #5cb87a;
+}
+
+.config-checklist li.no::before {
+  content: "○";
+  position: absolute;
+  left: 0;
+  color: #c9a227;
+}
+
+.config-adjuntos {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.config-resumen-grid {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.config-resumen-fila {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 0.88rem;
+}
+
+.config-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.btn-config {
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.btn-config:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-prim {
+  margin-left: auto;
+  background: #3d8f5c;
+  color: #fff;
+}
+
+.btn-atras,
+.btn-sec {
+  background: rgba(255, 255, 255, 0.08);
+  color: inherit;
+  border: 1px solid rgba(124, 185, 140, 0.3);
+}
+
+.btn-adjuntar {
+  background: rgba(124, 185, 140, 0.15);
+  color: #b8e0c4;
+  border: 1px solid rgba(124, 185, 140, 0.35);
+}
+
+.config-footer-links {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.88rem;
+}
+
+.config-accion-btn {
+  margin-top: 0.75rem;
+  width: 100%;
+}
+
+.config-msg-ok,
+.config-msg-err {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.config-msg-ok {
+  color: #9ee0b0;
+}
+
+.config-msg-err {
+  color: #f0a0a0;
+}
+
+.config-tabla-coef th,
+.config-tabla-coef td {
+  padding: 0.35rem 0.4rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}

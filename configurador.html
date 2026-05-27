@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es-AR" class="panel-app configurador-app">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Terra Natura · Configurador</title>
+  <meta name="theme-color" content="#0f1f18" />
+  <link rel="icon" type="image/svg+xml" href="/assets/icons/app-icon.svg" />
+  <link rel="stylesheet" href="/assets/css/site.css" />
+  <link rel="stylesheet" href="/assets/css/panel.css" />
+  <link rel="stylesheet" href="/assets/css/configurador.css" />
+  <script defer src="/assets/js/configurador.js"></script>
+</head>
+
+<body class="landing-focused panel-app-body">
+  <div class="panel-top">
+    <div class="wrap panel-top-inner">
+      <div>
+        <p class="panel-sub">Instalador · paso a paso</p>
+        <h1 class="panel-title">Configurador Terra Natura</h1>
+      </div>
+      <span id="estado-servidor" class="modo-pill">Conectando…</span>
+    </div>
+  </div>
+
+  <section class="wrap configurador-wrap">
+    <div class="config-progreso" aria-label="Progreso">
+      <div class="config-progreso-bar">
+        <div class="config-progreso-fill" id="barra-progreso" style="width: 0%"></div>
+      </div>
+      <p class="config-progreso-texto" id="texto-progreso">Cargando…</p>
+    </div>
+
+    <nav class="config-pasos-mini" id="pasos-mini" aria-label="Pasos"></nav>
+
+    <article class="config-card" id="config-card">
+      <header class="config-card-header">
+        <p class="config-paso-num" id="paso-num">Paso 1 de 14</p>
+        <h2 class="config-titulo" id="paso-titulo">—</h2>
+        <p class="config-subtitulo" id="paso-subtitulo">—</p>
+        <p class="config-estado-pill" id="paso-estado-pill" hidden></p>
+      </header>
+
+      <div class="config-ayuda" id="bloque-ayuda" hidden>
+        <button type="button" class="config-ayuda-toggle" id="btn-toggle-ayuda" aria-expanded="false">
+          ¿Cómo consigo esto? ▾
+        </button>
+        <div class="config-ayuda-body" id="ayuda-body" hidden></div>
+      </div>
+
+      <div class="config-contenido" id="paso-contenido"></div>
+
+      <footer class="config-nav">
+        <button type="button" class="btn-config btn-atras" id="btn-atras" disabled>Atrás</button>
+        <button type="button" class="btn-config btn-sec" id="btn-saltar" hidden>Saltar (opcional)</button>
+        <button type="button" class="btn-config btn-adjuntar" id="btn-adjuntar" hidden>
+          Adjuntar archivos
+        </button>
+        <input type="file" id="input-adjunto" multiple hidden accept="image/*,video/*" />
+        <button type="button" class="btn-config btn-prim" id="btn-siguiente">Siguiente</button>
+      </footer>
+    </article>
+
+    <p class="config-footer-links">
+      <a href="/programa">Ir al programa</a> ·
+      <a href="/marketing">Marketing</a> ·
+      <a href="/panel">Panel reservas</a>
+    </p>
+  </section>
+</body>
+
+</html>

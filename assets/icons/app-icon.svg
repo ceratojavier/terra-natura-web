@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="tit">
+  <title id="tit">Terra Natura</title>
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2d6b45"/>
+      <stop offset="100%" stop-color="#0f1f18"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="url(#g)"/>
+  <path fill="#f2efe8" d="M256 116l118 208H138L256 116zm0 72L184 296h144L256 188z"/>
+  <path fill="#c9a962" d="M196 396h120v44H196v-44z"/>
+</svg>
