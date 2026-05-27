@@ -1,27 +1,23 @@
 (function () {
   const WA_BASE = "https://wa.me/5493541571190";
-  const BOOKING_URL =
-    "https://www.booking.com/hotel/ar/cabanas-alpinas-terra-natura-bialet-masse.es.html";
 
   const form = document.getElementById("form-reserva");
   const unidad = document.getElementById("reserva-unidad");
   const checkIn = document.getElementById("reserva-in");
   const checkOut = document.getElementById("reserva-out");
   const personas = document.getElementById("reserva-personas");
-  const canal = document.getElementById("reserva-canal");
   const nota = document.getElementById("reserva-nota");
   const nombre = document.getElementById("reserva-nombre");
   const resultado = document.getElementById("reserva-resultado");
   const acciones = document.getElementById("reserva-acciones");
   const estadoApi = document.getElementById("reserva-api-estado");
 
-  if (!form || !unidad || !checkIn || !checkOut || !personas || !canal || !nota || !resultado || !acciones) {
+  if (!form || !unidad || !checkIn || !checkOut || !personas || !nota || !resultado || !acciones) {
     return;
   }
 
-  let siteConfig = { apiBase: "", bookingUrl: BOOKING_URL, whatsapp: "5493541571190" };
-  let motorConfig = null;
-  let lastCotizacion = null;
+  let siteConfig = { apiBase: "" };
+  let apiDisponible = false;
 
   function ymd(d) {
     const y = d.getFullYear();
@@ -41,14 +37,6 @@
     return x;
   }
 
-  function fmt(n) {
-    return new Intl.NumberFormat("es-AR", {
-      style: "currency",
-      currency: "ARS",
-      maximumFractionDigits: 0,
-    }).format(n);
-  }
-
   function apiBase() {
     const b = (siteConfig.apiBase || "").trim().replace(/\/$/, "");
     if (b) return b;
@@ -61,21 +49,11 @@
   async function apiFetch(path, options) {
     const base = apiBase();
     if (!base) return null;
-    const url = `${base}${path}`;
-    const res = await fetch(url, {
+    const res = await fetch(`${base}${path}`, {
       ...options,
       headers: { Accept: "application/json", ...(options && options.headers) },
     });
-    if (!res.ok) {
-      const err = new Error(`HTTP ${res.status}`);
-      err.status = res.status;
-      try {
-        err.body = await res.json();
-      } catch (_) {
-        err.body = null;
-      }
-      throw err;
-    }
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return res.json();
   }
 
@@ -86,55 +64,32 @@
     estadoApi.className = ok ? "muted api-ok" : "muted api-off";
   }
 
-  function temporadaFactor(inDate) {
-    const m = inDate.getMonth() + 1;
-    if (m === 1 || m === 2 || m === 7) return 1.22;
-    if (m === 3 || m === 4 || m === 12) return 1.1;
-    return 1;
-  }
-
-  function estimadoLocal(unitId, noches, inDate) {
-    const base = {
-      "alpina-1": 125000,
-      "alpina-2": 125000,
-      "alpina-3": 125000,
-      "suite-4": 100000,
-      "suite-5": 100000,
-    };
-    const b = base[unitId] || 110000;
-    const total = Math.round(b * temporadaFactor(inDate) * noches);
-    return { total, senia: Math.round(total * 0.5), origen: "estimado_local" };
-  }
-
   async function cargarConfig() {
     try {
       const sc = await fetch("./assets/data/site-config.json");
       if (sc.ok) siteConfig = { ...siteConfig, ...(await sc.json()) };
     } catch (_) {}
 
-    const base = apiBase();
-    if (!base) {
-      setApiEstado("Modo estimado — configurá apiBase en site-config.json para calendario PMS.", false);
+    if (!apiBase()) {
+      setApiEstado("Consulta directa por WhatsApp.", false);
       return;
     }
 
     try {
-      motorConfig = await apiFetch("/api/public/motor-reserva");
-      if (motorConfig && motorConfig.canales && motorConfig.canales.booking_url) {
-        siteConfig.bookingUrl = motorConfig.canales.booking_url;
-      }
-      if (motorConfig && Array.isArray(motorConfig.unidades) && motorConfig.unidades.length) {
+      const motor = await apiFetch("/api/public/motor-reserva");
+      apiDisponible = true;
+      if (motor && Array.isArray(motor.unidades) && motor.unidades.length) {
         unidad.innerHTML = "";
-        motorConfig.unidades.forEach(function (u) {
+        motor.unidades.forEach(function (u) {
           const opt = document.createElement("option");
           opt.value = u.id;
           opt.textContent = u.nombre || u.id;
           unidad.appendChild(opt);
         });
       }
-      setApiEstado("Conectado al PMS — precios y disponibilidad alineados con Booking.", true);
-    } catch (e) {
-      setApiEstado("API no disponible — usando tarifa estimada local.", false);
+      setApiEstado("Calendario del complejo sincronizado.", true);
+    } catch (_) {
+      setApiEstado("Consulta directa por WhatsApp.", false);
     }
   }
 
@@ -156,7 +111,6 @@
   form.addEventListener("submit", async function (e) {
     e.preventDefault();
     acciones.innerHTML = "";
-    lastCotizacion = null;
 
     const ci = parse(checkIn.value);
     const co = parse(checkOut.value);
@@ -168,27 +122,21 @@
       return;
     }
 
-    const unitId = unidad.value;
-    const unitLabel = unidad.options[unidad.selectedIndex]?.textContent || unitId;
+    const unitLabel = unidad.options[unidad.selectedIndex]?.textContent || unidad.value;
     const personasNum = Number(personas.value || 2);
-    let total = 0;
-    let senia = 0;
     let disponible = null;
-    let fuente = "estimado_local";
-    let reservaId = null;
 
     resultado.hidden = false;
     resultado.className = "result";
-    resultado.textContent = "Consultando disponibilidad y tarifas…";
+    resultado.textContent = "Consultando disponibilidad…";
 
-    const base = apiBase();
-    if (base) {
+    if (apiDisponible) {
       try {
         const data = await apiFetch("/api/cotizar", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            unidad_id: unitId,
+            unidad_id: unidad.value,
             check_in: checkIn.value,
             check_out: checkOut.value,
             promo: "ninguna",
@@ -196,79 +144,55 @@
           }),
         });
         disponible = data.disponible;
-        const cot = data.cotizacion || {};
-        total = Number(cot.total) || 0;
-        senia = Math.round(total * ((motorConfig && motorConfig.reglas && motorConfig.reglas.sena_pct) || 50) / 100);
-        fuente = "pms";
-        lastCotizacion = { total, senia, disponible, cot };
-      } catch (err) {
-        const loc = estimadoLocal(unitId, noches, ci);
-        total = loc.total;
-        senia = loc.senia;
-        fuente = "estimado_local";
+      } catch (_) {
+        disponible = null;
       }
-    } else {
-      const loc = estimadoLocal(unitId, noches, ci);
-      total = loc.total;
-      senia = loc.senia;
     }
 
-    let html = "";
     if (disponible === false) {
       resultado.className = "result warn";
-      html =
-        `<strong>Sin disponibilidad</strong> en el calendario del complejo (incluye reservas Booking sincronizadas).<br>` +
-        `Probá otras fechas o consultanos por WhatsApp.`;
+      resultado.innerHTML = "<strong>En esas fechas no vemos lugar por ahora.</strong><br>Escribinos y te ofrecemos alternativas cercanas.";
     } else if (disponible === true) {
       resultado.className = "result ok";
-      html =
-        `<strong>Disponible</strong> · ${fmt(total)} por ${noches} noche(s).<br>` +
-        `Seña (50%): <strong>${fmt(senia)}</strong>.`;
+      resultado.innerHTML = "<strong>Excelente, tenemos disponibilidad.</strong><br>Te respondemos por WhatsApp con una propuesta cordial.";
     } else {
       resultado.className = "result";
-      html =
-        `<strong>Estimado:</strong> ${fmt(total)} por ${noches} noche(s).<br>` +
-        `Seña de referencia (50%): <strong>${fmt(senia)}</strong>.` +
-        (fuente === "estimado_local" ? "<br><small>Conectá el servidor PMS para confirmar ocupación real.</small>" : "");
+      resultado.innerHTML = "<strong>Recibimos tu consulta.</strong><br>Te respondemos por WhatsApp con disponibilidad y propuesta directa.";
     }
 
-    resultado.innerHTML = html;
-
     const msg =
-      "Hola, quiero reservar en Terra Natura.\n\n" +
+      "Hola Terra Natura, quiero consultar estadía.\n\n" +
       `Unidad: ${unitLabel}\n` +
       `Fechas: ${checkIn.value} al ${checkOut.value}\n` +
+      `Noches: ${noches}\n` +
       `Personas: ${personasNum}\n` +
       (nombre && nombre.value ? `Nombre: ${nombre.value}\n` : "") +
-      `Canal: ${canal.value}\n` +
-      (disponible === true ? "Disponibilidad PMS: sí\n" : disponible === false ? "Disponibilidad PMS: no\n" : "") +
-      `Total ${fuente === "pms" ? "PMS" : "estimado"}: ${fmt(total)}\n` +
-      `Seña referencia: ${fmt(senia)}\n` +
       (nota.value ? `Comentario: ${nota.value}\n` : "") +
-      "\n¿Confirmamos seña y datos de ingreso?";
+      (disponible === true ? "Disponibilidad en calendario: sí\n" : disponible === false ? "Disponibilidad en calendario: no\n" : "") +
+      "\nQuisiera recibir propuesta directa desde la cabaña.";
 
     const wa = document.createElement("a");
     wa.className = "btn btn-primary";
     wa.href = `${WA_BASE}?text=${encodeURIComponent(msg)}`;
     wa.target = "_blank";
     wa.rel = "noopener noreferrer";
-    wa.textContent = "Enviar solicitud por WhatsApp";
+    wa.textContent = "Hablar por WhatsApp";
     acciones.appendChild(wa);
 
-    if (base && disponible === true && canal.value === "web_directa" && nombre && nombre.value.trim()) {
+    if (apiDisponible && disponible === true && nombre && nombre.value.trim()) {
       const pre = document.createElement("button");
       pre.type = "button";
       pre.className = "btn btn-outline";
-      pre.textContent = "Guardar pre-reserva en PMS";
+      pre.textContent = "Guardar consulta";
       pre.addEventListener("click", async function () {
         pre.disabled = true;
         pre.textContent = "Guardando…";
         try {
-          const r = await apiFetch("/api/reservas", {
+          await apiFetch("/api/reservas", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              unidad_id: unitId,
+              unidad_id: unidad.value,
               check_in: checkIn.value,
               check_out: checkOut.value,
               origen: "web_directa",
@@ -278,25 +202,15 @@
               notas_internas: nota.value ? nota.value.slice(0, 500) : null,
             }),
           });
-          reservaId = r.id;
-          pre.textContent = `Pre-reserva ${r.id.slice(0, 8)}… creada`;
-          resultado.innerHTML += `<br><small>ID reserva: ${r.id} — te contactamos para la seña.</small>`;
-        } catch (err) {
+          pre.textContent = "Consulta guardada";
+          resultado.innerHTML += "<br><small>Ya registramos tu consulta y te escribimos enseguida.</small>";
+        } catch (_) {
           pre.disabled = false;
-          pre.textContent = "No se pudo guardar (reintentar)";
-          alert((err.body && err.body.detail) || err.message || "Error al crear reserva");
+          pre.textContent = "Reintentar guardado";
         }
       });
       acciones.appendChild(pre);
     }
-
-    const booking = document.createElement("a");
-    booking.className = "btn btn-outline";
-    booking.href = siteConfig.bookingUrl || BOOKING_URL;
-    booking.target = "_blank";
-    booking.rel = "noopener noreferrer";
-    booking.textContent = "Ver en Booking";
-    acciones.appendChild(booking);
   });
 
   cargarConfig();
