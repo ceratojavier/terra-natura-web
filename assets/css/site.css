@@ -234,9 +234,7 @@ h3 {
 }
 
 .gallery-item figcaption {
-  padding: 0.68rem 0.75rem;
-  font-size: 0.84rem;
-  color: var(--muted);
+  display: none;
 }
 
 .gallery-item--wide {
